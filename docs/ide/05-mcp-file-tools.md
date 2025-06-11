@@ -51,7 +51,7 @@ File operations are the core of Claude Code IDE integration, allowing Claude to 
 **Request Format**:
 ```json
 {
-  "jsonrpc": "2.0", 
+  "jsonrpc": "2.0",
   "method": "file/read",
   "params": {
     "uri": "file:///absolute/path/to/file.el",
@@ -89,7 +89,7 @@ File operations are the core of Claude Code IDE integration, allowing Claude to 
 ```json
 {
   "jsonrpc": "2.0",
-  "method": "file/save", 
+  "method": "file/save",
   "params": {
     "uri": "file:///absolute/path/to/file.el",
     "content": "updated file content...",
@@ -138,7 +138,7 @@ File operations are the core of Claude Code IDE integration, allowing Claude to 
 **Response Format**:
 ```json
 {
-  "jsonrpc": "2.0", 
+  "jsonrpc": "2.0",
   "result": {
     "success": true,
     "was_modified": false

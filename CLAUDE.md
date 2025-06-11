@@ -29,7 +29,7 @@ This repository provides a comprehensive Claude Code IDE implementation for Emac
    - Session management with conversation continuity
    - Content sharing (buffers, regions, files)
 
-2. **MCP WebSocket Server** 
+2. **MCP WebSocket Server**
    - Standards-compliant RFC 6455 WebSocket implementation
    - permessage-deflate compression support
    - Connection management and error recovery
@@ -64,7 +64,7 @@ make all
 
 # Individual operations
 make compile      # Byte compilation (modules first, then main)
-make checkdoc     # Documentation linting  
+make checkdoc     # Documentation linting
 make clean        # Clean build artifacts
 make install      # Install package locally
 make help         # Show all available targets
@@ -133,7 +133,7 @@ PARAM2 is the optional parameter description."
 
 ### Commit Standards
 - **Feature commits**: Use `feat:` prefix for new functionality
-- **Bug fixes**: Use `fix:` prefix for bug corrections  
+- **Bug fixes**: Use `fix:` prefix for bug corrections
 - **Documentation**: Use `docs:` prefix for documentation updates
 - **Refactoring**: Use `refactor:` prefix for code improvements
 - **Format**: Short first line, detailed body if needed, co-authored signature

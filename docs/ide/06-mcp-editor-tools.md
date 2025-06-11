@@ -52,7 +52,7 @@ Editor state tools provide real-time awareness of cursor position, text selectio
 ```json
 {
   "jsonrpc": "2.0",
-  "method": "editor/position", 
+  "method": "editor/position",
   "params": {},
   "id": 6
 }
@@ -104,7 +104,7 @@ Editor state tools provide real-time awareness of cursor position, text selectio
     "buffers": [
       {
         "name": "claude-code-ide.el",
-        "uri": "file:///path/to/claude-code-ide.el", 
+        "uri": "file:///path/to/claude-code-ide.el",
         "modified": true,
         "size": 2048,
         "major_mode": "emacs-lisp-mode",
@@ -223,9 +223,9 @@ Editor state tools provide real-time awareness of cursor position, text selectio
         (result '()))
     (dolist (buffer buffers)
       (let ((name (buffer-name buffer)))
-        (when (or include-special 
+        (when (or include-special
                   (not (string-match-p "^[ *]" name)))
-          (push (claude-code-ide--get-buffer-info 
+          (push (claude-code-ide--get-buffer-info
                  buffer (eq buffer current)) result))))
     (reverse result)))
 ```
@@ -238,9 +238,9 @@ Editor state tools provide real-time awareness of cursor position, text selectio
          (start-line (max 1 (- current-line lines-before)))
          (end-line (+ current-line lines-after))
          (total-lines (count-lines (point-min) (point-max))))
-    
+
     (setq end-line (min end-line total-lines))
-    
+
     `((context_before . ,(claude-code-ide--get-lines start-line (1- current-line)))
       (context_after . ,(claude-code-ide--get-lines (1+ current-line) end-line))
       (current_line_text . ,(thing-at-point 'line t)))))
@@ -295,7 +295,7 @@ Editor state tools provide real-time awareness of cursor position, text selectio
 (defun claude-code-ide--notify-selection-change (selection-info)
   "Send selection change notification to all connected clients."
   (dolist (client claude-code-ide-mcp--clients)
-    (claude-code-ide--jsonrpc-send-notification 
+    (claude-code-ide--jsonrpc-send-notification
      client "editor/selection_changed" selection-info)))
 ```
 

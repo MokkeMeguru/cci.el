@@ -10,12 +10,12 @@
 - **`file/save`** - Save file changes with backup creation tracking
 - **`file/close`** - Close file buffers with optional save-if-modified
 
-### ✅ **Editor State Tools**  
+### ✅ **Editor State Tools**
 **Location**: `claude-code-ide-mcp.el:861-1027`
 
 - **`editor/selection`** - Real-time text selection tracking with coordinates
 - **`editor/position`** - Current cursor position with buffer context
-- **`editor/buffers`** - Open buffer enumeration with filtering options  
+- **`editor/buffers`** - Open buffer enumeration with filtering options
 - **`editor/context`** - Rich context around cursor with function detection
 
 ### ✅ **Workspace Awareness Tools**
@@ -31,11 +31,11 @@
 ```elisp
 ;; File Operations (4 tools)
 "file/open"    → claude-code-ide--mcp-file-open
-"file/read"    → claude-code-ide--mcp-file-read  
+"file/read"    → claude-code-ide--mcp-file-read
 "file/save"    → claude-code-ide--mcp-file-save
 "file/close"   → claude-code-ide--mcp-file-close
 
-;; Editor State (4 tools)  
+;; Editor State (4 tools)
 "editor/selection" → claude-code-ide--mcp-editor-selection
 "editor/position"  → claude-code-ide--mcp-editor-position
 "editor/buffers"   → claude-code-ide--mcp-editor-buffers
@@ -43,7 +43,7 @@
 
 ;; Workspace Awareness (3 tools)
 "workspace/folders" → claude-code-ide--mcp-workspace-folders
-"workspace/files"   → claude-code-ide--mcp-workspace-files  
+"workspace/files"   → claude-code-ide--mcp-workspace-files
 "workspace/search"  → claude-code-ide--mcp-workspace-search
 ```
 
@@ -51,7 +51,7 @@
 
 ### 📁 **File Management**
 - **Open files**: Claude can open specific files and jump to exact lines
-- **Read contents**: Access file content for context understanding  
+- **Read contents**: Access file content for context understanding
 - **Save changes**: Apply Claude's modifications to files
 - **Buffer management**: Track and close file handles efficiently
 
@@ -61,7 +61,7 @@
 - **Buffer enumeration**: See all open files and their states
 - **Code context**: Function/class awareness for contextual help
 
-### 🏗️ **Project Understanding**  
+### 🏗️ **Project Understanding**
 - **Root detection**: Find project boundaries via Git, package files, etc.
 - **File discovery**: Navigate project structure intelligently
 - **Search foundation**: Framework for content search across project
@@ -74,7 +74,7 @@ Client→Server: {"jsonrpc":"2.0","method":"file/open","params":{"uri":"file:///
 Server→Client: {"jsonrpc":"2.0","result":{"success":true,"buffer":"file.el","line":42,"column":0},"id":1}
 ```
 
-### Editor State Example  
+### Editor State Example
 ```json
 Client→Server: {"jsonrpc":"2.0","method":"editor/selection","params":{},"id":2}
 Server→Client: {"jsonrpc":"2.0","result":{"active":true,"start":150,"end":200,"text":"selected code"},"id":2}
@@ -141,7 +141,7 @@ Claude CLI ←→ WebSocket ←→ JSON-RPC ←→ MCP Tools ←→ Emacs APIs
 
 ### ✅ **Complete Integration Stack**
 1. **WebSocket Layer**: RFC 6455 compliant frame processing
-2. **Protocol Layer**: JSON-RPC 2.0 message handling  
+2. **Protocol Layer**: JSON-RPC 2.0 message handling
 3. **Tool Layer**: 11 MCP tools for complete IDE functionality
 4. **Emacs Layer**: Direct buffer, file, and project integration
 

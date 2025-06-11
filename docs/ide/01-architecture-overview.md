@@ -12,7 +12,7 @@ The current `claude-code-ide-mcp.el` provides basic WebSocket server infrastruct
 ├─────────────────────────────────────────┤
 │          MCP Tool Dispatch              │  <- Phase 1A: Need to implement
 ├─────────────────────────────────────────┤
-│        JSON-RPC 2.0 Processing          │  <- Phase 1A: Need to implement  
+│        JSON-RPC 2.0 Processing          │  <- Phase 1A: Need to implement
 ├─────────────────────────────────────────┤
 │       WebSocket Frame Handling          │  <- Phase 1A: Need to complete
 ├─────────────────────────────────────────┤
@@ -27,7 +27,7 @@ The current `claude-code-ide-mcp.el` provides basic WebSocket server infrastruct
 - **Capability**: Creates TCP listener on available port (3000-3999)
 - **Status**: Working but minimal
 
-### ✅ WebSocket Handshake Support  
+### ✅ WebSocket Handshake Support
 - **Function**: `claude-code-ide--ws-create-handshake-response`
 - **Capability**: SHA1 hashing, accepts `permessage-deflate` compression
 - **Status**: Working for initial connection
@@ -47,7 +47,7 @@ The current `claude-code-ide-mcp.el` provides basic WebSocket server infrastruct
 ;; Frame parsing for incoming messages
 (defun claude-code-ide--ws-parse-frame (data))
 
-;; Frame generation for outgoing messages  
+;; Frame generation for outgoing messages
 (defun claude-code-ide--ws-create-frame (opcode payload))
 
 ;; Message handling pipeline
@@ -100,7 +100,7 @@ The current `claude-code-ide-mcp.el` provides basic WebSocket server infrastruct
 
 ### Message Types
 - **Requests**: Client calls server methods (e.g., `file/open`)
-- **Responses**: Server replies with results or errors  
+- **Responses**: Server replies with results or errors
 - **Notifications**: One-way messages (e.g., selection updates)
 
 ### Core MCP Tools Needed
@@ -114,11 +114,11 @@ The current `claude-code-ide-mcp.el` provides basic WebSocket server infrastruct
 ## Implementation Priority
 
 ### Phase 1A (Day 1 Morning)
-1. **Complete WebSocket frame parsing** 
+1. **Complete WebSocket frame parsing**
 2. **Implement JSON-RPC 2.0 foundation**
 3. **Create MCP tool dispatch system**
 
-### Phase 1B (Day 1 Afternoon)  
+### Phase 1B (Day 1 Afternoon)
 4. **Implement core file operations**
 5. **Add editor state tracking**
 6. **Test basic MCP integration**

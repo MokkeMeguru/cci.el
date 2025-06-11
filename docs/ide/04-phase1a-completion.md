@@ -6,12 +6,12 @@
 **Location**: `claude-code-ide-mcp.el:258-451`
 
 - **Message Structures**: Complete `claude-code-ide--jsonrpc-message` and `claude-code-ide--mcp-client` structs
-- **Parsing/Serialization**: Full JSON-RPC 2.0 message parsing with error handling 
+- **Parsing/Serialization**: Full JSON-RPC 2.0 message parsing with error handling
 - **Dispatch System**: Complete method routing with request/response/notification handling
 - **Tool Registry**: Hash-table based MCP tool registration system
 - **Error Handling**: Standard JSON-RPC error codes (-32700 to -32603)
 
-### ✅ WebSocket Frame Implementation  
+### ✅ WebSocket Frame Implementation
 **Location**: `claude-code-ide-mcp.el:453-650`
 
 - **RFC 6455 Compliance**: Complete frame parsing for text/close/ping/pong frames
@@ -38,7 +38,7 @@ TCP Accept (port 3000-3999)
 WebSocket Handshake (SHA1 + MCP protocol)
         ↓
 Frame Reception (RFC 6455 parsing)
-        ↓  
+        ↓
 JSON-RPC Processing (parse → dispatch)
         ↓
 MCP Tool Handler (registry lookup)
@@ -55,7 +55,7 @@ Frame Transmission back to Claude CLI
 ;; Parse incoming JSON-RPC from WebSocket text frames
 (claude-code-ide--jsonrpc-parse-message json-string)
 
-;; Dispatch to appropriate handlers based on message type  
+;; Dispatch to appropriate handlers based on message type
 (claude-code-ide--jsonrpc-dispatch client message)
 
 ;; Send responses back via WebSocket frames
@@ -87,7 +87,7 @@ Frame Transmission back to Claude CLI
 
 ### 🎯 **Phase 1A: COMPLETE**
 - JSON-RPC 2.0 protocol ✅
-- WebSocket frame processing ✅  
+- WebSocket frame processing ✅
 - MCP tool dispatch infrastructure ✅
 - Connection and error handling ✅
 

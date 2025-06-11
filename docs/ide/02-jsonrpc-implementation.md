@@ -12,7 +12,7 @@ JSON-RPC 2.0 uses three message types:
 ```json
 {
   "jsonrpc": "2.0",
-  "method": "file/open", 
+  "method": "file/open",
   "params": {"uri": "file:///path/to/file.el", "line": 42},
   "id": 1
 }
@@ -23,14 +23,14 @@ JSON-RPC 2.0 uses three message types:
 {
   "jsonrpc": "2.0",
   "result": {"success": true},
-  "id": 1  
+  "id": 1
 }
 ```
 
 ### Response Format (Error)
 ```json
 {
-  "jsonrpc": "2.0", 
+  "jsonrpc": "2.0",
   "error": {"code": -32601, "message": "Method not found"},
   "id": 1
 }
@@ -53,7 +53,7 @@ JSON-RPC 2.0 uses three message types:
 ;; Client connection state
 (cl-defstruct claude-code-ide--mcp-client
   process        ; WebSocket process
-  id            ; Unique client ID  
+  id            ; Unique client ID
   state         ; Connection state (:connecting :connected :disconnected)
   pending-requests) ; Hash table of request ID -> callback
 
@@ -96,11 +96,11 @@ JSON-RPC 2.0 uses three message types:
              (id (alist-get 'id parsed))
              (result (alist-get 'result parsed))
              (error (alist-get 'error parsed)))
-        
+
         ;; Validate JSON-RPC version
         (unless (string= jsonrpc "2.0")
           (error "Invalid JSON-RPC version: %s" jsonrpc))
-        
+
         ;; Create message structure
         (make-claude-code-ide--jsonrpc-message
          :jsonrpc jsonrpc
@@ -110,7 +110,7 @@ JSON-RPC 2.0 uses three message types:
          :result result
          :error error))
     (error
-     (claude-code-ide-mcp--log-message "ERROR" 
+     (claude-code-ide-mcp--log-message "ERROR"
        (format "Failed to parse JSON-RPC: %s" (error-message-string err)))
      nil)))
 
@@ -119,27 +119,27 @@ JSON-RPC 2.0 uses three message types:
   (let ((data '()))
     ;; Always include version
     (push '(jsonrpc . "2.0") data)
-    
+
     ;; Add method for requests/notifications
     (when (claude-code-ide--jsonrpc-message-method message)
       (push (cons 'method (claude-code-ide--jsonrpc-message-method message)) data))
-    
+
     ;; Add params if present
     (when (claude-code-ide--jsonrpc-message-params message)
       (push (cons 'params (claude-code-ide--jsonrpc-message-params message)) data))
-    
+
     ;; Add ID for requests/responses (not notifications)
     (when (claude-code-ide--jsonrpc-message-id message)
       (push (cons 'id (claude-code-ide--jsonrpc-message-id message)) data))
-    
+
     ;; Add result for successful responses
     (when (claude-code-ide--jsonrpc-message-result message)
       (push (cons 'result (claude-code-ide--jsonrpc-message-result message)) data))
-    
+
     ;; Add error for error responses
     (when (claude-code-ide--jsonrpc-message-error message)
       (push (cons 'error (claude-code-ide--jsonrpc-message-error message)) data))
-    
+
     (json-encode data)))
 ```
 
@@ -161,15 +161,15 @@ JSON-RPC 2.0 uses three message types:
    ((and (claude-code-ide--jsonrpc-message-method message)
          (claude-code-ide--jsonrpc-message-id message))
     (claude-code-ide--handle-request client message))
-   
+
    ;; Handle responses
    ((claude-code-ide--jsonrpc-message-id message)
     (claude-code-ide--handle-response client message))
-   
+
    ;; Handle notifications
    ((claude-code-ide--jsonrpc-message-method message)
     (claude-code-ide--handle-notification client message))
-   
+
    (t
     (claude-code-ide-mcp--log-message "ERROR" "Invalid JSON-RPC message"))))
 
@@ -179,7 +179,7 @@ JSON-RPC 2.0 uses three message types:
          (params (claude-code-ide--jsonrpc-message-params message))
          (id (claude-code-ide--jsonrpc-message-id message))
          (handler (gethash method claude-code-ide--mcp-tools)))
-    
+
     (if handler
         (condition-case err
             ;; Call handler and send response
@@ -202,7 +202,7 @@ JSON-RPC 2.0 uses three message types:
 
 ### JSON-RPC Error Codes
 - `-32700`: Parse error
-- `-32600`: Invalid Request  
+- `-32600`: Invalid Request
 - `-32601`: Method not found
 - `-32602`: Invalid params
 - `-32603`: Internal error
@@ -253,7 +253,7 @@ The JSON-RPC implementation connects to the WebSocket layer through these functi
 (let ((json "{\"jsonrpc\":\"2.0\",\"method\":\"test\",\"id\":1}"))
   (claude-code-ide--jsonrpc-parse-message json))
 
-;; Test message serialization  
+;; Test message serialization
 (let ((msg (make-claude-code-ide--jsonrpc-message
             :jsonrpc "2.0"
             :method "test"

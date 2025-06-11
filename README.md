@@ -10,7 +10,7 @@ While VSCode and JetBrains have official Claude Code IDE integration, Emacs user
 
 ### 🚀 **Dual Integration Modes**
 
-#### 🖥️ **Terminal Mode** 
+#### 🖥️ **Terminal Mode**
 - Direct Claude CLI integration via terminal emulation
 - Simple and reliable for basic AI assistance
 - Perfect for chat-based interactions and quick queries
@@ -109,7 +109,7 @@ C-c c r
 M-x claude-code-ide-mcp-toggle-mode
 ;; or: C-c c M
 
-;; Start MCP WebSocket server  
+;; Start MCP WebSocket server
 M-x claude-code-ide-mcp-start-server
 ;; or: C-c c >
 
@@ -133,7 +133,7 @@ All commands use the `C-c c` prefix when `claude-code-ide-mode` is active:
 | `C-c c b` | `claude-code-ide-switch-to-buffer` | Switch to Claude buffer |
 | `C-c c S` | `claude-code-ide-status` | Show status |
 
-### Content Interaction  
+### Content Interaction
 | Key | Command | Description |
 |-----|---------|-------------|
 | `C-c c c` | `claude-code-ide-send-command` | Send custom command |
@@ -165,12 +165,12 @@ All commands use the `C-c c` prefix when `claude-code-ide-mode` is active:
 (use-package claude-code-ide
   :ensure nil ; manually installed
   :config
-  ;; Enable globally  
+  ;; Enable globally
   (global-claude-code-ide-mode 1)
-  
+
   ;; Configure Claude CLI path if needed
   (setq claude-code-ide-program "/usr/local/bin/claude")
-  
+
   ;; Enable MCP IDE mode by default
   (setq claude-code-ide-mcp-enabled t)
   (setq claude-code-ide-mcp-auto-start t))
@@ -181,7 +181,7 @@ All commands use the `C-c c` prefix when `claude-code-ide-mode` is active:
 ```elisp
 ;; Customization options
 (setq claude-code-ide-buffer-name "*Claude*")           ; Buffer name
-(setq claude-code-ide-startup-delay 0.2)               ; Startup delay  
+(setq claude-code-ide-startup-delay 0.2)               ; Startup delay
 (setq claude-code-ide-large-buffer-threshold 2000)     ; Large buffer warning
 (setq claude-code-ide-mcp-port-range '(3000 . 3010))   ; MCP port range
 (setq claude-code-ide-term-name "xterm-256color")      ; Terminal type
@@ -229,13 +229,13 @@ M-x customize-group RET claude-code-ide RET
 C-c c M
 
 ;; 2. Start MCP server
-C-c c >  
+C-c c >
 
 ;; 3. Start Claude CLI in terminal
 ;; $ claude
 
 ;; 4. Claude can now:
-;;    - Open files directly: "Open src/main.py at line 45"  
+;;    - Open files directly: "Open src/main.py at line 45"
 ;;    - Edit files: "Add error handling to the login function"
 ;;    - See your selections: "Explain this selected code"
 ;;    - Navigate workspace: "Show me all the test files"
@@ -346,7 +346,7 @@ make clean
 ### Architecture
 
 - **Single-file design** - All functionality in `claude-code-ide.el`
-- **WebSocket server** - Custom RFC 6455 implementation  
+- **WebSocket server** - Custom RFC 6455 implementation
 - **MCP protocol** - JSON-RPC 2.0 over WebSocket
 - **Terminal integration** - Via `eat` package for CLI mode
 - **Transient menus** - Modern Emacs UI patterns

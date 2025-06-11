@@ -49,7 +49,7 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
            (masked (not (zerop (logand byte2 #x80))))
            (payload-len (logand byte2 #x7F))
            (offset 2))
-      
+
       ;; Handle extended payload length
       (cond
        ((= payload-len 126)
@@ -65,12 +65,12 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
                                (* (aref data (+ offset 6)) 256)
                                (aref data (+ offset 7))))
           (cl-incf offset 8))))
-      
+
       ;; Handle masking key
       (when masked
         (when (>= (length data) (+ offset 4))
           (cl-incf offset 4))) ; Skip masking key for now
-      
+
       ;; Extract payload if complete
       (when (>= (length data) (+ offset payload-len))
         (let ((payload (substring data offset (+ offset payload-len))))
@@ -91,10 +91,10 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
                           payload))
          (payload-len (length payload-bytes))
          (header '()))
-    
+
     ;; First byte: FIN=1, RSV=000, OPCODE
     (push (logior #x80 opcode) header)
-    
+
     ;; Second byte and payload length
     (cond
      ((< payload-len 126)
@@ -111,7 +111,7 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
       (push (/ (% payload-len 16777216) 65536) header)
       (push (/ (% payload-len 65536) 256) header)
       (push (% payload-len 256) header)))
-    
+
     ;; Combine header and payload
     (concat (apply #'unibyte-string (reverse header)) payload-bytes)))
 ```
@@ -128,22 +128,22 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
                  :buffer ""
                  :handshake-done nil
                  :pending-requests (make-hash-table :test 'equal))))
-    
+
     ;; Add to client list
     (push client claude-code-ide-mcp--clients)
-    
+
     ;; Set up process handlers
     (set-process-filter process
       (lambda (proc data)
         (claude-code-ide--ws-process-data client data)))
-    
+
     (set-process-sentinel process
       (lambda (proc status)
         (claude-code-ide--ws-handle-disconnect client status)))
-    
-    (claude-code-ide-mcp--log-message "CONNECT" 
+
+    (claude-code-ide-mcp--log-message "CONNECT"
       (format "New client connection: %s" (claude-code-ide--mcp-client-id client)))
-    
+
     client))
 ```
 
@@ -155,14 +155,14 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
   (condition-case err
       (with-slots (buffer handshake-done) client
         (setf buffer (concat buffer data))
-        
+
         (if handshake-done
             ;; Process WebSocket frames
             (claude-code-ide--ws-process-frames client)
           ;; Handle WebSocket handshake
           (claude-code-ide--ws-handle-handshake client)))
     (error
-     (claude-code-ide-mcp--log-message "ERROR" 
+     (claude-code-ide-mcp--log-message "ERROR"
        (format "Data processing error: %s" (error-message-string err))))))
 
 (defun claude-code-ide--ws-process-frames (client)
@@ -170,13 +170,13 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
   (with-slots (buffer) client
     (let ((processed 0))
       (while (> (length buffer) processed)
-        (let ((frame (claude-code-ide--ws-parse-frame 
+        (let ((frame (claude-code-ide--ws-parse-frame
                       (substring buffer processed))))
           (if frame
               (let ((frame-len (plist-get frame :total-length))
                     (opcode (plist-get frame :opcode))
                     (payload (plist-get frame :payload)))
-                
+
                 ;; Process frame based on opcode
                 (cond
                  ((= opcode claude-code-ide--ws-opcode-text)
@@ -185,11 +185,11 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
                   (claude-code-ide--ws-handle-close-frame client))
                  ((= opcode claude-code-ide--ws-opcode-ping)
                   (claude-code-ide--ws-handle-ping-frame client payload)))
-                
+
                 (cl-incf processed frame-len))
             ;; Incomplete frame, wait for more data
             (cl-return))))
-      
+
       ;; Remove processed data from buffer
       (setf buffer (substring buffer processed)))))
 ```
@@ -200,10 +200,10 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
 (defun claude-code-ide--ws-handle-text-frame (client payload)
   "Handle WebSocket text frame containing JSON-RPC message."
   (let ((json-string (decode-coding-string payload 'utf-8)))
-    (claude-code-ide-mcp--log-message "FRAME" 
-      (format "Text frame from %s: %s" 
+    (claude-code-ide-mcp--log-message "FRAME"
+      (format "Text frame from %s: %s"
               (claude-code-ide--mcp-client-id client) json-string))
-    
+
     ;; Parse and dispatch JSON-RPC message
     (let ((message (claude-code-ide--jsonrpc-parse-message json-string)))
       (when message
@@ -215,7 +215,7 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
 
 (defun claude-code-ide--ws-handle-close-frame (client)
   "Handle WebSocket close frame."
-  (claude-code-ide-mcp--log-message "CLOSE" 
+  (claude-code-ide-mcp--log-message "CLOSE"
     (format "Client %s closing connection" (claude-code-ide--mcp-client-id client)))
   (claude-code-ide--ws-send-frame client claude-code-ide--ws-opcode-close ""))
 ```
@@ -229,7 +229,7 @@ WebSocket frames carry JSON-RPC messages between Claude CLI and our Emacs MCP se
     (condition-case err
         (process-send-string (claude-code-ide--mcp-client-process client) frame)
       (error
-       (claude-code-ide-mcp--log-message "ERROR" 
+       (claude-code-ide-mcp--log-message "ERROR"
          (format "Failed to send frame: %s" (error-message-string err)))))))
 
 (defun claude-code-ide--ws-send-text-frame (client text)
@@ -246,8 +246,8 @@ The JSON-RPC `claude-code-ide--send-message` function becomes:
 (defun claude-code-ide--send-message (client jsonrpc-message)
   "Send JSON-RPC MESSAGE to CLIENT via WebSocket."
   (let ((json-string (claude-code-ide--jsonrpc-serialize-message jsonrpc-message)))
-    (claude-code-ide-mcp--log-message "SEND" 
-      (format "Sending to %s: %s" 
+    (claude-code-ide-mcp--log-message "SEND"
+      (format "Sending to %s: %s"
               (claude-code-ide--mcp-client-id client) json-string))
     (claude-code-ide--ws-send-text-frame client json-string)))
 ```
@@ -268,7 +268,7 @@ The server creation needs updated connection handling:
 ## Error Handling
 
 - **Malformed Frames**: Log error, close connection gracefully
-- **Partial Frames**: Buffer data until complete frame received  
+- **Partial Frames**: Buffer data until complete frame received
 - **Connection Loss**: Clean up client state and pending requests
 - **Protocol Violations**: Send close frame with appropriate status code
 
